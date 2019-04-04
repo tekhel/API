@@ -1,4 +1,3 @@
-//L'update ne se fait pas: zero ligne modifiée
 package demo;
 
 import java.sql.Connection;
@@ -31,11 +30,11 @@ public class ModifImm {
             sc.skip("\n");
             System.out.println("Description : ");
             String desc = sc.nextLine();
-            pstm.setString(1, nimm);
-            pstm.setInt(2, num);
-            pstm.setString(3, carb);
-            pstm.setFloat(4, prix);
-            pstm.setString(5, desc);
+            pstm.setString(5, nimm);
+            pstm.setInt(1, num);
+            pstm.setString(2, carb);
+            pstm.setFloat(3, prix);
+            pstm.setString(4, desc);
             int nl = pstm.executeUpdate();
             System.out.println("nombre de lignes mises à jour = " + nl);
 

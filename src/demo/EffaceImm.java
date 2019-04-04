@@ -19,17 +19,17 @@ public class EffaceImm {
         System.out.print("N° d'immatriculation à effacer : ");
         String imm = sc.nextLine();
         String query1 = "DELETE FROM PROJ_TAXI WHERE IMMATRICULATION = ?";
-        String query2 = "DELETE FROM API_COMFACT WHERE NUMCOMMANDE = ?";
+        String query2 = "DELETE FROM PROJ_LOCATION WHERE IDTAXI = ?";
         try (PreparedStatement pstm1 = dbConnect.prepareStatement(query1);
              PreparedStatement pstm2 = dbConnect.prepareStatement(query2)) {
 
             pstm1.setString(1, imm);
             int nl = pstm1.executeUpdate();
-            System.out.println(nl + " lignes effacees Dans la table LIGNE");
+            System.out.println(nl + " lignes effacees Dans la table PROJ_TAXI");
 
             pstm2.setString(1, imm);
             nl = pstm2.executeUpdate();
-            System.out.println(nl + " lignes effacees Dans la table COMFACT");
+            System.out.println(nl + " lignes effacees Dans la table PROJ_LOCATION");
 
         } catch (SQLException e) {
             System.out.println("erreur " + e);

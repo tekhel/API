@@ -26,10 +26,10 @@ public class RechercheDesc {
             System.exit(1);
         }
         System.out.println("connexion établie");
-        try (PreparedStatement pstm = dbConnect.prepareStatement("SELECT * FROM PROJ_TAXI WHERE DESCRIPTION LIKE ? ")) {
+        try (PreparedStatement pstm = dbConnect.prepareStatement("SELECT * FROM PROJ_TAXI WHERE lower(DESCRIPTION) LIKE ? ")) {
             System.out.print("Entrez une description :");
-            String descrech = sc.nextLine();
-            pstm.setString(1,"%"+ descrech +"%");//IGNORE_CASE ?????
+            String descrech = sc.nextLine().toLowerCase();
+            pstm.setString(1,"%"+ descrech +"%"); //IGNORE_CASE ?????
             boolean trouve = false;
             try (ResultSet rs = pstm.executeQuery()) {
                 while (rs.next()) {

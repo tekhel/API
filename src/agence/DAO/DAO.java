@@ -18,11 +18,12 @@ public abstract class DAO<T> {
    }
 	/**
 	 * Permet de récupérer un objet via son ID
-	 * @param id identifiant de l'objet recherché
+	 * @param idtaxi identifiant de l'objet recherché
 	 * @return T objet trouvé
          * @throws SQLException objet non trouvé
 	 */
-	public abstract T read(int id)throws SQLException;
+	public abstract T read(String nimm)throws SQLException;
+        public abstract T read(int idloc)throws SQLException;
 	
 	/**
 	 * Permet de créer une entrée dans la base de données
