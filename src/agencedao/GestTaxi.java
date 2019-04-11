@@ -169,11 +169,11 @@ public class GestTaxi {
     public void sup() {//SQL06
         try {
             System.out.println("Numéro d'immatriculation à effacer :");
-            String nimm = sc.nextLine();
-
+            String nimm = sc.nextLine().toUpperCase();
+            tActuel=new Taxi(nimm);
             taxiDAO.delete(tActuel);
         } catch (SQLException e) {
-            System.out.println("erreur " + e.getMessage());
+            System.out.println("Erreur " + e.getMessage());
         }
     }
     public void calculPrix(){/* Code non fonctionnel

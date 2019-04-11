@@ -38,6 +38,9 @@ public class Taxi {
  */
     public Taxi() {
     }
+    public Taxi(String immatriculation) {
+        this.immatriculation = immatriculation;
+    }
 /**
  * constructeur paramétré
  * @param idtaxi id unique du taxi

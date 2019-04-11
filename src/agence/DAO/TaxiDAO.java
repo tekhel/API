@@ -115,7 +115,7 @@ public abstract class TaxiDAO extends DAO<Taxi> {
     @Override
     public void delete(Taxi obj) throws SQLException {
 
-        String req1 = "delete from proj_taxi where immatriculation= ?";
+        String req1 = "delete from proj_taxi where UPPER(immatriculation)= ?";
         String req2 = "delete from proj_location where idtaxi= ?";
         try (PreparedStatement pstm1 = dbConnect.prepareStatement(req1);
              PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
