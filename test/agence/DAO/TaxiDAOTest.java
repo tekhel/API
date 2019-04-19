@@ -7,23 +7,23 @@ package agence.DAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
+//import java.time.LocalDate;
 import agence.metier.Taxi;
 import myconnections.DBConnection;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 /**
  *
  * @author linda
  */
 public class TaxiDAOTest {
     static Connection dbConnect;
-    
     public TaxiDAOTest() {
     }
     
@@ -34,15 +34,16 @@ public class TaxiDAOTest {
             System.out.println("connection invalide");
             System.exit(1);
         }
+        
     }
     
     @AfterClass
     public static void tearDownClass() {
+        DBConnection.closeConnection();
     }
     
     @Before
     public void setUp() {
-        DBConnection.closeConnection();
     }
     
     @After
@@ -51,45 +52,47 @@ public class TaxiDAOTest {
 
     /**
      * Test of create method, of class TaxiDAO.
-     * @throws java.lang.Exception
      */
     @Test
     public void testCreate() throws Exception {
         System.out.println("create");
-        Taxi obj = new Taxi(0,"TestImmatriculation","TestCarburant",1,"TestDescription");
         TaxiDAO instance = new TaxiDAO() {
             @Override
             public Taxi read(int idloc) throws SQLException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        }  ;
+        };
         instance.setConnection(dbConnect);
-        Taxi expResult = new Taxi(0,"TestImmatriculation","TestCarburant",1,"TestDescription");
+        
+        Taxi obj = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        Taxi expResult = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
         Taxi result = instance.create(obj);
-        
-        assertEquals("Immatriculations différents",expResult.getImmatriculation(), result.getImmatriculation());
-        assertEquals("Carburants différents",expResult.getCarburant(), result.getCarburant());
-        assertEquals("Descriptions différentes",expResult.getDescription(), result.getDescription());
-        
-        //assertNotEquals("id non généré",expResult.getIdtaxi(),result.getIdtaxi());
-        //int idtaxi=result.getIdtaxi;
-        obj=new Taxi(0,"TestImmatriculation","TestCarburant",2,"TestDescription");
-        try{
-            Taxi result2 = instance.create(obj);
-            fail("exception de doublon non déclenchée");
-            instance.delete(result2);
+
+        assertEquals("Immatriculations différentes", expResult.getImmatriculation(), result.getImmatriculation());
+        assertEquals("Carburants différents", expResult.getCarburant(), result.getCarburant());
+        assertEquals("Prix au km différents", expResult.getPrixkm(), result.getPrixkm(), 0);
+        assertEquals("Descriptions différentes", expResult.getDescription(), result.getDescription());
+        assertNotEquals("Idtaxi restée a 0", result.getIdtaxi(), expResult.getIdtaxi());
+
+        //Test of creating an existing object
+        obj = new Taxi(0, "Immatriculation2", "Carburant2", 2, "Description2");
+        try {
+            Taxi resultat_2 = instance.create(obj);
+            fail("Exception de doublon non générée");
+            instance.delete(resultat_2);
+        } catch (SQLException e) {
+            instance.delete(result);
         }
-        catch(SQLException e){}
-        instance.delete(result);
-        
-          obj=new Taxi(0,"TestImmatriculation","TestCarburant",3,"TestDescription");
-        try{
-            Taxi result3 = instance.create(obj);
-            fail("exception de code postal non déclenchée");
-            instance.delete(result3);
+
+        //Test of creating an object with incorrect "Prixkm"
+        obj = new Taxi(0, "Immatriculation", "Carburant2", -1, "Description2");
+        try {
+            Taxi resultat_3 = instance.create(obj);
+            fail("Exception de check du prix au km non déclenchée");
+            instance.delete(resultat_3);
+        } catch (SQLException e) {
+
         }
-        catch(SQLException e){}
-       
     }
 
     /**
@@ -98,18 +101,30 @@ public class TaxiDAOTest {
     @Test
     public void testRead() throws Exception {
         System.out.println("read");
-        String nimm = "";
-        TaxiDAO instance = new TaxiDAOImpl() {
+        String immatriculation = "";
+        TaxiDAO instance = new TaxiDAO() {
             @Override
             public Taxi read(int idloc) throws SQLException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        Taxi expResult = null;
-        Taxi result = instance.read(nimm);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setConnection(dbConnect);
+        Taxi obj = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        Taxi expResult = instance.create(obj);
+        immatriculation = expResult.getImmatriculation();
+        Taxi result = instance.read(immatriculation);
+        assertEquals("Id de taxi différents", expResult.getIdtaxi(), result.getIdtaxi());
+        assertEquals("Immatriculations différentes", expResult.getImmatriculation(), result.getImmatriculation());
+        assertEquals("Carburants différents", expResult.getCarburant(), result.getCarburant());
+        assertEquals("Prix au km différents", expResult.getPrixkm(), result.getPrixkm(), 0);
+        assertEquals("Descriptions différentes", expResult.getDescription(), result.getDescription());
+
+        try {
+            result = instance.read(0);
+            fail("Exception d'id inconnu non générée! ");
+        } catch (SQLException e) {
+            instance.delete(result);
+        }
     }
 
     /**
@@ -118,18 +133,58 @@ public class TaxiDAOTest {
     @Test
     public void testUpdate() throws Exception {
         System.out.println("update");
-        Taxi obj = null;
-        TaxiDAO instance = new TaxiDAOImpl() {
+        TaxiDAO instance = new TaxiDAO() {
             @Override
             public Taxi read(int idloc) throws SQLException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        Taxi expResult = null;
+        instance.setConnection(dbConnect);
+        Taxi obj = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        obj = instance.create(obj);
+        obj.setImmatriculation("Immatriculation2");
+        obj.setCarburant("Carburant2");
+        obj.setPrixkm(2);
+        obj.setDescription("Description2");
+
+        Taxi expResult = obj;
         Taxi result = instance.update(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        assertEquals("Id de taxi différents", expResult.getIdtaxi(), result.getIdtaxi());
+        assertEquals("Immatriculations différentes", expResult.getImmatriculation(), result.getImmatriculation());
+        assertEquals("Carburants différents", expResult.getCarburant(), result.getCarburant());
+        assertEquals("Prix au km différents", expResult.getPrixkm(), result.getPrixkm(), 0);
+        assertEquals("Descriptions différentes", expResult.getDescription(), result.getDescription());
+
+        instance.delete(obj);
+
+        //Test of an update based on an existing object
+        Taxi obj1 = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        obj1 = instance.create(obj1);
+        Taxi obj2 = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        obj2 = instance.create(obj2);
+
+        obj1.setImmatriculation("Immatriculation2");
+
+        try {
+            instance.update(obj1);
+            fail("Exception de doublon non générée");
+        } catch (SQLException e) {
+            instance.delete(obj1);
+            instance.delete(obj2);
+        }
+
+        Taxi obj3 = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        obj3 = instance.create(obj3);
+
+        obj3.setPrixkm(-1);
+
+        try {
+            instance.update(obj3);
+            fail("Exception de check du prix au km non déclanchée");
+        } catch (SQLException e) {
+            instance.delete(obj3);
+        }
     }
 
     /**
@@ -138,17 +193,23 @@ public class TaxiDAOTest {
     @Test
     public void testDelete() throws Exception {
         System.out.println("delete");
-        Taxi obj = null;
-        TaxiDAO instance = new TaxiDAOImpl() {
+        TaxiDAO instance = new TaxiDAO() {
             @Override
             public Taxi read(int idloc) throws SQLException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
+        instance.setConnection(dbConnect);
+        Taxi obj = new Taxi(0, "Immatriculation", "Carburant", 1, "Description");
+        obj = instance.create(obj);
+        int idtaxi = obj.getIdtaxi();
         instance.delete(obj);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        try {
+            instance.read(idtaxi);
+            fail("Exception de record introuvable non générée");
+        } catch (SQLException e) {
+            
+        }    }
 
     /**
      * Test of rechercheDesc method, of class TaxiDAO.
@@ -157,7 +218,7 @@ public class TaxiDAOTest {
     public void testRechercheDesc() throws Exception {
         System.out.println("rechercheDesc");
         String descrech = "";
-        TaxiDAO instance = new TaxiDAOImpl() {
+        TaxiDAO instance = new TaxiDAO() {
             @Override
             public Taxi read(int idloc) throws SQLException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -170,7 +231,7 @@ public class TaxiDAOTest {
         fail("The test case is a prototype.");
     }
 
-    public abstract class TaxiDAOImpl extends TaxiDAO {
-    }
+    //public class TaxiDAO extends TaxiDAO {
+    //}
     
 }
