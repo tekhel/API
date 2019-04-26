@@ -123,12 +123,12 @@ public abstract class TaxiDAO extends DAO<Taxi> {
             pstm1.setString(1, obj.getImmatriculation());
             int n = pstm1.executeUpdate();
             if (n == 0) {
-                throw new SQLException("aucune ligne client effacée");
+                //throw new SQLException("aucune ligne client effacée");
             }
             pstm2.setInt(1, obj.getIdtaxi());
             int m = pstm2.executeUpdate();
             if (m == 0) {
-                throw new SQLException("aucune ligne client effacée");
+               // throw new SQLException("aucune ligne client effacée");
             }
 
         }
