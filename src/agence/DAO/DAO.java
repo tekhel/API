@@ -22,8 +22,7 @@ public abstract class DAO<T> {
 	 * @return T objet trouvé
          * @throws SQLException objet non trouvé
 	 */
-	public abstract T read(String nimm)throws SQLException;
-        public abstract T read(int idloc)throws SQLException;
+	public abstract T read(int num)throws SQLException;
 	
 	/**
 	 * Permet de créer une entrée dans la base de données

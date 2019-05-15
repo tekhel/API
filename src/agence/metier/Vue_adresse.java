@@ -1,104 +1,378 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package agence.metier;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
- *
- * @author Linda TEMGOUA
+ * classe métier de gestion des locations via une vue
+ * @author linda TEMGOUA
+ * @version 1.0
+ * 
  */
 public class Vue_adresse {
-
-  /**
-   * identifiant unique de la location
+    
+   /**
+   * Identifiant de location
    */
-	protected int idlocation;
-        protected int adresse_depart;
-        protected int adresse_fin;
+    private int idlocation;
+    
+   /**
+   * Date de la location
+   */
+    private LocalDate dateloc;
+    
+   /**
+   * Nombre de km totaux
+   */
+    private int kmtotal;
+    
+   /**
+   * Valeur de l'acompte
+   */
+    private float acompte;
         
-  /**
-   * date de la location
+   /**
+   * Total à payer
    */
-	//protected java.util.Date dateloc;
-  /**
-   * Kilomètre total parcouru en une location
+    private float total;
+        
+   /**
+   * identifiant du client
    */
-	protected float kmtotal;
-  /**
-   * acompte versé avant location
+    private int idclient;
+        
+   /**
+   * identifiant du taxi
    */
-	protected float acompte;
-  
-
-/**
- * constructeur par défaut
- */
-     public Vue_adresse() {
-         
-    }/**
- * constructeur paramétré
- * @param idloc identifiant unique de la location
- * @param dateloc date de la location
- * @param kmtotal km total
- * @param acompte acompte versée
- */
-
-    public Vue_adresse(int idlocation, int adresse_depart, int adresse_fin, float kmtotal, float acompte) {
+    private int idtaxi;
+       
+   /**
+   * code postal aller
+   */
+    private int cp;
+        
+   /**
+   * Localité aller
+   */
+    private String localite;
+        
+   /**
+   * Nom de la rue aller
+   */
+    private String rue;
+        
+   /**
+   * Numéro de la maison aller
+   */
+    private String num;
+        
+   /**
+   * Code postal du retour
+   */
+    private int cp_retour;
+        
+   /**
+   * Nom de la localité retour
+   */
+    private String loc_retour;
+        
+   /**
+   * Nom de la rue retour
+   */
+    private String rue_retour;
+        
+   /**
+   * Numéro de la maison retour
+   */
+    private String num_retour;
+    
+    /**
+    * constructeur par défaut
+    */
+    public Vue_adresse() {
+    }
+    
+    /**
+    * constructeur paramétré
+    * @param idlocation Identifiant unique de la location, affecté par la base de données
+    * @param dateloc Date de la location
+    * @param kmtotal Nombre de km totaux
+    * @param acompte Valeur de l'acompte payé
+    * @param total prix total à payer
+    * @param idclient Identifiant du client
+    * @param idtaxi Identifiant du taxi
+    * @param cp Code postal aller
+    * @param localite Nom de la localité aller
+    * @param rue Nom de la rue aller
+    * @param num Numéro de maison aller
+    * @param cp_retour Code postal de la localité retour
+    * @param loc_retour Nom de la localité retour
+    * @param rue_retour Nom de la rue retour
+    * @param num_retour Numéro de maison retour
+    */
+    public Vue_adresse(int idlocation, LocalDate dateloc, int kmtotal, float acompte, float total, int idclient, int idtaxi, int cp, String localite, String rue, String num, int cp_retour, String loc_retour, String rue_retour, String num_retour) {
         this.idlocation = idlocation;
-        this.adresse_depart = adresse_depart;
-        this.adresse_fin = adresse_fin;
+        this.dateloc = dateloc;
         this.kmtotal = kmtotal;
         this.acompte = acompte;
+        this.total = total;
+        this.idclient = idclient;
+        this.idtaxi = idtaxi;
+        this.cp = cp;
+        this.localite = localite;
+        this.rue = rue;
+        this.num = num;
+        this.cp_retour = cp_retour;
+        this.loc_retour = loc_retour;
+        this.rue_retour = rue_retour;
+        this.num_retour = num_retour;
     }
-
+    
+    /**
+    * getter identifiant de la localité
+    * @return identifiant de la localité
+    */
     public int getIdlocation() {
         return idlocation;
     }
 
-    public void setIdlocation(int idlocation) {
-        this.idlocation = idlocation;
+    /**
+     * setter identifiant de la localité
+     * @param idloc identifiant de la localité
+     */
+    public void setIdlocation(int idloc) {
+        this.idlocation = idloc;
     }
 
-    public int getAdresse_depart() {
-        return adresse_depart;
+    /**
+    * getter date de la location
+    * @return Date de la location
+    */
+    public LocalDate getDateloc() {
+        return dateloc;
     }
 
-    public void setAdresse_depart(int adresse_depart) {
-        this.adresse_depart = adresse_depart;
+    /**
+    * setter date de la location
+    * @param dateloc Date de la location
+    */
+    public void setDateloc(LocalDate dateloc) {
+        this.dateloc = dateloc;
     }
 
-    public int getAdresse_fin() {
-        return adresse_fin;
-    }
-
-    public void setAdresse_fin(int adresse_fin) {
-        this.adresse_fin = adresse_fin;
-    }
-
-    public float getKmtotal() {
+    /**
+    * getter nom de km totaux
+    * @return Nombre de km totaux
+    */
+    public int getKmtotal() {
         return kmtotal;
     }
 
-    public void setKmtotal(float kmtotal) {
+    /**
+     * setter kmtotal
+     * @param kmtotal Nombre de km totaux
+     */
+    public void setKmtotal(int kmtotal) {
         this.kmtotal = kmtotal;
     }
 
+     /**
+    * getter acompte
+    * @return Prix de l'acompte versé
+    */
     public float getAcompte() {
         return acompte;
     }
 
+    /**
+     * setter acompte
+     * @param acompte Acompte payé
+     */
     public void setAcompte(float acompte) {
         this.acompte = acompte;
     }
 
-    @Override
-    public String toString() {
-        return "Vue_adresse{" + "idlocation=" + idlocation + ", adresse_depart=" + adresse_depart + ", adresse_fin=" + adresse_fin + ", kmtotal=" + kmtotal + ", acompte=" + acompte + '}';
+     /**
+    * getter total
+    * @return Total a payer
+    */
+    public float getTotal() {
+        return total;
+    }
+
+    /**
+     * setter total
+     * @param total Total à payer
+     */
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+     /**
+    * getter identifiant client
+    * @return identifiant du client
+    */
+    public int getIdclient() {
+        return idclient;
+    }
+
+    /**
+     * setter identifiant client
+     * @param idclient identifiant du client
+     */
+    public void setIdclient(int idclient) {
+        this.idclient = idclient;
+    }
+
+     /**
+    * getter identifiant taxi
+    * @return identifiant du taxi
+    */
+    public int getIdtaxi() {
+        return idtaxi;
+    }
+
+    /**
+     * setter identifiant taxi
+     * @param idtaxi identifiant du taxi
+     */
+    public void setIdtaxi(int idtaxi) {
+        this.idtaxi = idtaxi;
+    }
+
+     /**
+    * getter cp
+    * @return Code postal de la localité aller
+    */
+    public int getCp() {
+        return cp;
     }
     
-     
+    /**
+     * setter code postal
+     * @param cp Code postal de la localité
+     */
+    public void setCp(int cp) {
+        this.cp = cp;
+    }
+
+     /**
+    * getter localite
+    * @return Nom de la localité de l'aller
+    */
+    public String getLocalite() {
+        return localite;
+    }
+
+    /**
+     * setter localite
+     * @param localite Nom de la localité aller
+     */
+    public void setLocalite(String localite) {
+        this.localite = localite;
+    }
+
+     /**
+    * getter rue
+    * @return Nom de la rue de l'aller
+    */
+    public String getRue() {
+        return rue;
+    }
+
+    /**
+     * setter rue
+     * @param rue Nom de la rue aller
+     */
+    public void setRue(String rue) {
+        this.rue = rue;
+    }
+
+     /**
+    * getter num
+    * @return Numéro de rue de l'aller
+    */
+    public String getNum() {
+        return num;
+    }
+
+    /**
+     * setter numero
+     * @param num Numero de la localité aller
+     */
+    public void setNum(String num) {
+        this.num = num;
+    }
+ /**
+    * getter code postal retour
+    * @return Code postal de la localité du retour
+    */
+    
+    public int getCp_retour() {
+        return cp_retour;
+    }
+
+    /**
+     * setter Code postal retour
+     * @param cp Code postal de la localité retour
+     */
+    public void setCp_retour(int cp_retour) {
+        this.cp_retour = cp_retour;
+    }
+
+     /**
+    * getter localité retour
+    * @return Nom de la localité du retour
+    */
+    public String getLoc_retour() {
+        return loc_retour;
+    }
+
+    /**
+     * setter Localité retour
+     * @param loc_retour Nom de la localité retour
+     */
+    public void setLoc_retour(String loc_retour) {
+        this.loc_retour = loc_retour;
+    }
+
+     /**
+    * getter rue retour
+    * @return Nom de la rue de la localité de retour
+    */
+    public String getRue_retour() {
+        return rue_retour;
+    }
+
+    /**
+     * setter Nom de la rue retour
+     * @param rue_retour nom de la rue de la localité retour
+     */
+    public void setRue_retour(String rue_retour) {
+        this.rue_retour = rue_retour;
+    }
+
+     /**
+    * getter numero retour
+    * @return Numéro de maison de la localité de retour
+    */
+    public String getNum_retour() {
+        return num_retour;
+    }
+
+    /**
+     * setter Numéro retour
+     * @param num_retour Numéro de la maison de la localité retour
+     */
+    public void setNum_retour(String num_retour) {
+        this.num_retour = num_retour;
+    }
+
+    @Override
+    public String toString() {
+        return "Vue_adresse{" + "idlocation=" + idlocation + ", dateloc=" + dateloc + ", kmtotal=" + kmtotal + ", acompte=" + acompte + ", total=" + total + ", idclient=" + idclient + ", idtaxi=" + idtaxi + ", cp=" + cp + ", localite=" + localite + ", rue=" + rue + ", num=" + num + ", cp_retour=" + cp_retour + ", loc_retour=" + loc_retour + ", rue_retour=" + rue_retour + ", num_retour=" + num_retour + '}';
+    }
+    
+    
+    
 }

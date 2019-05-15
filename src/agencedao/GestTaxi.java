@@ -7,16 +7,12 @@ package agencedao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-//import java.time.LocalDate;
-//import java.time.format.DateTimeFormatter;
 import java.util.List;
-//import java.util.Locale;
 import java.util.Scanner;
 import agence.DAO.TaxiDAO;
 import agence.DAO.DAO;
 import agence.metier.Taxi;
 import myconnections.DBConnection;
-//import  agence.DAO.Vue_adresseDAO;
 import agence.metier.Vue_adresse;
 
 /**
@@ -27,9 +23,9 @@ public class GestTaxi {
 
     Scanner sc = new Scanner(System.in);
     Taxi tActuel = null;
-    Vue_adresse vActuel = null;
-    DAO<Taxi> taxiDAO = null;
-    DAO<Vue_adresse> vue_adresseDAO = null;
+    TaxiDAO taxiDAO = new TaxiDAO();
+    List<Taxi> ListeTaxisActuels = null;
+    List<Vue_adresse> ListeAdresses = null;
     public GestTaxi() {
 
     }
@@ -42,17 +38,6 @@ public class GestTaxi {
         }
 
         System.out.println("connexion établie");
-
-        taxiDAO = new TaxiDAO() {
-            @Override
-            public Taxi read(int idloc) throws SQLException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-            /*@Override
-            public Taxi read(String nimm) throws SQLException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }*/
-        };
         taxiDAO.setConnection(dbConnect);
 
         int ch = 0;
@@ -81,7 +66,7 @@ public class GestTaxi {
                     calculPrix();
                     break;
                 case 7:
-                    afficheLocation();
+                    //afficheLocation();
                     break;
                 case 8:
                     System.out.println("Aurevoir");
@@ -94,9 +79,6 @@ public class GestTaxi {
     }
 
     public void nouveau() {
-        System.out.println("Id du taxi :");
-        int num = sc.nextInt();
-        sc.skip("\n");
         System.out.print("Immatriculation :");
         String nimm = sc.nextLine();
         System.out.print("Carburant :");
@@ -106,12 +88,12 @@ public class GestTaxi {
         sc.skip("\n");
         System.out.print("Description :");
         String desc = sc.nextLine();
-        tActuel = new Taxi(num, nimm, carb, prix, desc);
+        tActuel = new Taxi(0, nimm, carb, prix, desc);
         try {
             tActuel = taxiDAO.create(tActuel);
             System.out.println("Taxi actuel : " + tActuel);
         } catch (SQLException e) {
-            //System.out.println("Erreur :" + e);
+            System.out.println("Erreur :" + e);
         }
 
     }
@@ -120,8 +102,8 @@ public class GestTaxi {
         try {
             System.out.println("Numéro d'immatriculation :");
             String nimm = sc.nextLine().toLowerCase();
-            tActuel = taxiDAO.read(nimm);
-            System.out.println("Taxi actuel : " + tActuel);
+            tActuel = ((TaxiDAO) taxiDAO).rechImma(nimm);
+            System.out.println("Voici le taxi recherché: " + tActuel);
 
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
@@ -145,25 +127,11 @@ public class GestTaxi {
         try {
             System.out.println("Quelle immatriculation ? :");
             String nimm = sc.nextLine();
-            System.out.println("Nouvel id :");
-            int num = sc.nextInt();
-            sc.skip("\n");
-            System.out.println("Carburant :");
-            String carb = sc.nextLine();
-            System.out.println("Prix : ");
-            Float prix = sc.nextFloat();
-            sc.skip("\n");
-            System.out.println("Description :");
-            String desc = sc.nextLine();
-            tActuel.setIdtaxi(num);
-            tActuel.setImmatriculation(nimm);
-            tActuel.setCarburant(carb);
-            tActuel.setPrixkm(prix);
-            tActuel.setDescription(desc);
-            taxiDAO.update(tActuel);
+            tActuel = ((TaxiDAO) taxiDAO).rechImma(nimm);
+            System.out.println("Le taxi actuel est: "+tActuel);
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
-        }
+        }   
     }
 
     public void sup() {//SQL06
@@ -187,16 +155,20 @@ public class GestTaxi {
             System.out.println("erreur " + e.getMessage());
         }*/
     }
-    public void afficheLocation(){/* Code non fonctionnel
+      public void affichageTotal() {
         try {
-            System.out.println("id de la location :");
-            int idloc = sc.nextInt();
-            vActuel = vue_adresseDAO.read(idloc);
-            System.out.println("Location actuelle : " + tActuel);
+            System.out.println("Veuillez entrer l'id de la location");
+            int id = sc.nextInt();
+            ListeAdresses = taxiDAO.rechloc(id);
+            for (Vue_adresse va : ListeAdresses) {
+                System.out.println(va);
+            }
 
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
-        }*/
+
+        }
+
     }
   
 
