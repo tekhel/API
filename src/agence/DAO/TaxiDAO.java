@@ -28,7 +28,7 @@ public class TaxiDAO extends DAO<Taxi> {
     public Taxi create(Taxi obj) throws SQLException {
 
         String req1 = "insert into proj_taxi(immatriculation, carburant, prixkm, description)" + "values(?,?,?,?)";
-        String req2 = "select IDTAXI from API_TAXI where IMMATRICULATION=? and CARBURANT=? and PRIXKM=? and DESCRIPTION=?";
+        String req2 = "select IDTAXI from proj_taxi where IMMATRICULATION=? and CARBURANT=? and PRIXKM=? and DESCRIPTION=?";
         try (PreparedStatement pstm1 = dbConnect.prepareStatement(req1);
              PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
             //pstm1.setInt(1, obj.getIdtaxi());
@@ -41,7 +41,6 @@ public class TaxiDAO extends DAO<Taxi> {
                 throw new SQLException("erreur de creation taxi, aucune ligne créée");
             }
            System.out.println(n + "ligne insérée");
-
             pstm2.setString(1, obj.getImmatriculation());
             pstm2.setString(2, obj.getCarburant());
             pstm2.setFloat(3, obj.getPrixkm());
@@ -71,7 +70,7 @@ public class TaxiDAO extends DAO<Taxi> {
     @Override
     public Taxi read(int num) throws SQLException {
 
-        String req = "select * from proj_taxi where id = ?";
+        String req = "select * from proj_taxi where idtaxi = ?";
 
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
@@ -233,7 +232,7 @@ public class TaxiDAO extends DAO<Taxi> {
      */
 
     public Taxi rechImma(String nimm) throws SQLException{
-        String req= "select * from proj__taxi where immatriculation=?";
+        String req= "select * from proj_taxi where immatriculation=?";
         try(PreparedStatement pstm = dbConnect.prepareStatement(req)){
             pstm.setString(1, nimm);
             try (ResultSet rs = pstm.executeQuery()) {

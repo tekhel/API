@@ -92,7 +92,7 @@ public class TaxiDAOTest {
     /**
      * Test of read method, of class TaxiDAO.
      */
-    //@Test
+    @Test
     public void testRead() throws Exception {
         System.out.println("read");
         int num = 0;
@@ -119,7 +119,7 @@ public class TaxiDAOTest {
     /**
      * Test of update method, of class TaxiDAO.
      */
-    //@Test
+    @Test
     public void testUpdate() throws Exception {
         System.out.println("update");
         TaxiDAO instance = new TaxiDAO();
@@ -188,7 +188,7 @@ public class TaxiDAOTest {
     /**
      * Test of deleteSeul method, of class TaxiDAO.
      */
-    //@Test
+    @Test
     public void testDeleteSeul() throws Exception {
         System.out.println("deleteSeul");
         TaxiDAO instance = new TaxiDAO();
